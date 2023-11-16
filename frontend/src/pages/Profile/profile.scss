@@ -1,0 +1,100 @@
+.profile-container {
+  position: relative;
+}
+
+.bg {
+  // background-color: red;
+  width: 100%;
+  height: 100px;
+  background-image: url("../../assets//img/bg.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.avatar {
+  position: absolute;
+  left: 5%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+
+  /* width: 100px;
+    height: 100px; */
+}
+
+.input-container {
+  position: absolute;
+  top: 360px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  text-align: center;
+  background-color: violet;
+  padding: 50px 20px;
+  border-radius: 25px;
+}
+
+.details {
+  position: absolute;
+  top: 95px;
+  left: 11%;
+  line-height: 1;
+}
+
+.avatar-img {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+@media screen and (min-width: 1600px) {
+  .input-container {
+    position: absolute;
+    top: 450px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65%;
+    text-align: center;
+    background-color: violet;
+    padding: 50px 20px;
+    border-radius: 25px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .avatar-img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .avatar-img {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .avatar-img {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .avatar-img {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .input-container {
+    position: absolute;
+    top: 360px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    background-color: violet;
+    padding: 50px 20px;
+    border-radius: 25px;
+  }
+}

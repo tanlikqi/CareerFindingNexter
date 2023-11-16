@@ -1,0 +1,59 @@
+@mixin slideIn {
+  animation-name: slideInAnimation;
+  animation-duration: 1s; // Adjust the duration as needed
+  animation-timing-function: ease; // Adjust the timing function
+}
+
+@mixin slideInLarge {
+  animation-name: slideInAnimationLarge;
+  animation-duration: 1s; // Adjust the duration as needed
+  animation-timing-function: ease; // Adjust the timing function
+}
+
+@mixin slideInFromRight {
+  animation-name: slideInAnimationFromRight;
+  animation-duration: 1s; // Adjust the duration as needed
+  animation-timing-function: ease; // Adjust the timing function
+}
+
+@mixin faded {
+  animation: fadeAnimation;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+}
+
+@keyframes slideInAnimation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInAnimationLarge {
+  from {
+    transform: translateX(-150%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInAnimationFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

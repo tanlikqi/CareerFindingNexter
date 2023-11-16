@@ -1,0 +1,91 @@
+@import "../../cssProperty/reuseable.scss";
+
+.bigTitle {
+  font-weight: bold !important;
+  font-size: 64px !important;
+  // @include slideIn;
+}
+
+.bigTitleSecondary {
+  font-weight: bold !important;
+  font-size: 64px !important;
+  color: #f32170;
+  // @include slideInLarge;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.bigTitleSecondary.fade-in {
+  opacity: 1;
+}
+
+.nexterTitle {
+  font-weight: bold !important;
+  font-size: 64px !important;
+  margin-left: 20px !important;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    to right,
+    #f32170,
+    #ff6b08,
+    #cf23cf,
+    #eedd44
+  );
+  color: transparent;
+  display: inline-block;
+  letter-spacing: 2px;
+  -webkit-background-clip: text;
+  letter-spacing: 3px !important;
+  // @include slideInLarge;
+}
+
+.img-1 {
+  height: 150px;
+  width: 150px;
+  // @include slideInFromRight;
+}
+
+.mainAnimation {
+  @include slideInFromRight;
+}
+.img-2 {
+  height: 150px;
+  width: 200px;
+  // @include slideInFromRight;
+}
+.img-3 {
+  height: 100px;
+  width: 150px;
+  // @include slideInFromRight;
+}
+.img-4 {
+  height: 50px;
+  width: 150px;
+  // @include slideInFromRight;
+}
+
+.textfieldborder {
+  box-shadow: 3px 3px 3px 3px black;
+}
+
+.textfieldborder.active {
+  box-shadow: 3px 3px 3px 3px orange;
+}
+.trendingBox {
+  text-transform: capitalize !important;
+  background-color: rgb(236, 228, 213) !important;
+  box-shadow: 3px 3px 3px 3px black;
+  padding: 10px;
+}
+
+.trendingtext {
+  font-weight: bold !important;
+  letter-spacing: 1px !important;
+}
+
+.trendingBtn {
+  color: grey !important;
+  font-size: 12px !important;
+  background-color: rgb(243, 237, 237) !important;
+  margin: 10px !important;
+}

@@ -1,0 +1,37 @@
+.carouselcard {
+  height: 600px !important;
+  width: 900px !important;
+  max-height: 500px !important;
+}
+
+.carousel {
+  width: 900px !important;
+  height: 600px !important;
+  max-height: 500px !important;
+}
+
+.carouselcardtitle {
+  font-weight: bold !important;
+  color: white;
+  font-size: 24px !important;
+  margin: 10px !important;
+}
+
+.carouselcarddes {
+  color: white;
+  font-size: 18px !important;
+  margin: 10px !important;
+}
+
+.carouselcardBtn {
+  color: white !important;
+  border: 2px solid white !important;
+  border-radius: 25px !important;
+  background-color: transparent !important; /* Set the background to transparent */
+  margin: 10px !important;
+}
+
+.carouselcardBtnText {
+  text-transform: capitalize;
+  padding: 5px;
+}

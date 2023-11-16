@@ -1,0 +1,62 @@
+.jobitem {
+  height: 190px;
+  width: 800px;
+  margin: 20px 80px;
+  border-radius: 25px !important;
+  display: flex;
+}
+
+.jobitem:hover {
+  cursor: pointer;
+  border: 2px solid #3498db;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.jobContainer {
+  max-height: 2800px; /* Set the maximum height */
+  overflow-y: hidden; /* Enable scrolling */
+  margin-bottom: 30px; /* Add margin at the bottom */
+  padding-right: 17px; /* Add some padding to the right */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.paginationText {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  margin-right: 5px !important;
+}
+
+.jobItemtitle {
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.joItemMinorText {
+  margin: 15px 10px 0px 0px !important;
+  font-size: 14px !important;
+  color: grey !important;
+}
+
+.jobTypeText {
+  margin: 15px 0px 0px 15px !important;
+  font-size: 14px !important;
+  color: grey !important;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: end;
+  margin-top: 10px;
+  // align-items: end;
+  // align-content: end;
+}
