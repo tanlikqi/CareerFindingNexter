@@ -11,7 +11,14 @@ import JobListComponent from "../../../components/JobListComponent";
 import useUserPostedJobList from "./service";
 import { Typography } from "@material-ui/core";
 function UserPostedJobList() {
-  const { jobData, goToAddJob, handleDelete } = useUserPostedJobList();
+  const {
+    jobData,
+    goToAddJob,
+    handleDelete,
+    handleSubmitSearch,
+    handleSearch,
+    searchInput,
+  } = useUserPostedJobList();
 
   return (
     <div>
@@ -19,17 +26,21 @@ function UserPostedJobList() {
         <Box style={{ display: "flex", justifyContent: "space-around" }}>
           <Box style={{ width: "800px" }}>
             <TextField
+              value={searchInput}
               fullWidth
               label="Search"
               color="warning"
+              onChange={(e: any) => {
+                handleSearch(e);
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
-                      // onClick={() => {
-                      //   handleSubmitSearch();
-                      // }}
+                      onClick={() => {
+                        handleSubmitSearch();
+                      }}
                       edge="end"
                     >
                       <SearchIcon color="action" />
@@ -78,6 +89,7 @@ function UserPostedJobList() {
             isEditing={true}
             isDeleting={true}
             handleDelete={handleDelete}
+            searchInputs={searchInput}
           />
         </Box>
       </Box>

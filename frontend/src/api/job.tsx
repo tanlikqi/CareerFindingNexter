@@ -41,6 +41,10 @@ export const getJobDetailById = async (data: any) => {
   return await axios.post("http://localhost:8081/job/getjobDetailById", data);
 };
 
+export const searchJob = async (searchInput: any) => {
+  return await axios.post("http://localhost:8081/job/searchJob", searchInput);
+};
+
 export const getAlljobApplication = async () => {
   try {
     return await axios.get(

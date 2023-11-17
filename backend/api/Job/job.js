@@ -187,67 +187,39 @@ router.post("/getjobDetailById", (req, res) => {
   });
 });
 
-// router.post("/applyJob", uploadResume.single("resume"), (req, res) => {
-//   // const image = req.file ? req.file.filename : null;
-//   console.log("Entered /applyJob route"); // Add this line to check if the route is being accessed
+router.post("/searchJob", (req, res) => {
+  const searchInput = req.body.searchInput;
+  console.log(searchInput);
 
-//   const {
-//     userId,
-//     jobId,
-//     companyId,
-//     jobTitle,
-//     resume,
-//     applicantPhoneNo,
-//     applicantEmail,
-//     description,
-//   } = req.body;
+  // You can modify the SQL query based on your search criteria
+  let sql = `
+    SELECT * FROM joblist
+    WHERE 1`; // Always true initially
 
-//   const sql =
-//     "INSERT INTO jobapplication (`userId`,`jobId`,`companyId`,`jobTitle`,`resume`,`applicantPhoneno`,`applicantEmail`,`description`) VALUES (?,?,?,?,?,?,?,?)";
-//   db.query(
-//     sql,
-//     [
-//       userId,
-//       companyId,
-//       jobId,
-//       jobTitle,
-//       resume,
-//       applicantPhoneNo,
-//       applicantEmail,
-//       description,
-//     ],
-//     (err, result) => {
-//       console.log("Database query result:", result);
-//       console.log(err);
-//       if (err) return res.json({ Message: "error" });
-//       return res.json({ Status: "Success" });
-//     }
-//   );
-// });
+  const params = [];
 
-// router.get("/getAlljobApplication", (req, res) => {
-//   const sql = "SELECT * FROM jobapplication";
-//   db.query(sql, (err, data) => {
-//     if (err) return res.json(err);
-//     return res.json(data);
-//   });
-// });
+  if (searchInput !== null) {
+    sql += `
+      AND (
+        title LIKE ? OR
+        companyName LIKE ? OR
+        specialisation LIKE ? OR
+        jobType LIKE ?
+      )`;
 
-// router.get("/downloadPDF", (req, res) => {
-//   const test = req.query.test;
-//   // const fileName = req.params.fileName;
-//   const fileName = req.query.test;
-//   const filePath = __dirname + "/resume/" + fileName;
-//   console.log(fileName);
-//   console.log(filePath);
+    const searchParam = `%${searchInput}%`;
 
-//   if (fs.existsSync(filePath)) {
-//     res.setHeader("Content-Type", "application/pdf");
-//     const fileStream = fs.createReadStream(filePath);
-//     fileStream.pipe(res);
-//   } else {
-//     res.status(404).send("File not found");
-//   }
-// });
+    // Add the search parameters only if searchInput is not null
+    params.push(searchParam, searchParam, searchParam, searchParam);
+  }
+
+  db.query(sql, params, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.json({ Message: "error" });
+    }
+    return res.json({ Status: "Success", data: data });
+  });
+});
 
 module.exports = router;

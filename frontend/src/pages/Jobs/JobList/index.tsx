@@ -11,24 +11,34 @@ import JobListComponent from "../../../components/JobListComponent";
 import useJobListService from "./service";
 
 function JobList() {
-  const { jobData, goToAddJob, userRole } = useJobListService();
+  const {
+    jobData,
+    goToAddJob,
+    userRole,
+    handleSubmitSearch,
+    handleSearch,
+    searchInput,
+  } = useJobListService();
   return (
     <div>
       <Box style={{ padding: "15px 0px" }}>
         <Box style={{ display: "flex", justifyContent: "space-around" }}>
           <Box style={{ width: "800px" }}>
             <TextField
+              value={searchInput}
               fullWidth
               label="Search"
               color="warning"
+              onChange={(e: any) => {
+                handleSearch(e);
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
-                      // onClick={() => {
-                      //   handleSubmitSearch();
-                      // }}
+                      onClick={() => {
+                        handleSubmitSearch();
+                      }}
                       edge="end"
                     >
                       <SearchIcon color="action" />
@@ -59,7 +69,7 @@ function JobList() {
         </Box>
         <Box style={{ margin: "25px 0px" }}>
           {/* display the joblist component */}
-          <JobListComponent data={jobData} />
+          <JobListComponent data={jobData} searchInputs={searchInput} />
         </Box>
       </Box>
     </div>

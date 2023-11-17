@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { deleteJob, getAlljob } from "../../../api/job";
+import { deleteJob, getAlljob, searchJob } from "../../../api/job";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function useUserPostedJobList() {
   const [jobData, setJobData] = useState();
+
+  const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     getjob();
@@ -21,6 +23,19 @@ export default function useUserPostedJobList() {
 
   const goToAddJob = () => {
     navigate("/addjob");
+  };
+
+  const handleSearch = (e: any) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleSubmitSearch = async () => {
+    const res = await searchJob({ searchInput: searchInput });
+    const result = res.data.data;
+    if (res.request.status == 200) {
+      setJobData(res.data.data);
+    }
+    console.log(result);
   };
 
   const handleDelete = (jobId: any) => {
@@ -49,5 +64,12 @@ export default function useUserPostedJobList() {
       }
     });
   };
-  return { jobData, goToAddJob, handleDelete };
+  return {
+    jobData,
+    goToAddJob,
+    handleDelete,
+    handleSearch,
+    handleSubmitSearch,
+    searchInput,
+  };
 }
