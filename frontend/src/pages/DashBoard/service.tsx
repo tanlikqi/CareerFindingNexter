@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { searchJob } from "../../api/job";
+import { useDispatch } from "react-redux";
+import { getSearchInput } from "../../redux/reducer/searchInput";
 
 export default function useDashBoardService() {
   let textFieldref: any = useRef(null);
@@ -23,7 +26,7 @@ export default function useDashBoardService() {
 
   const trendingData = [
     { id: 1, name: "Software Enginner" },
-    { id: 2, name: "Sales" },
+    { id: 2, name: "Industry" },
     { id: 3, name: "Accountant" },
     { id: 4, name: "Marketing" },
     { id: 5, name: "Architecture" },
@@ -40,6 +43,8 @@ export default function useDashBoardService() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
+
+  const dispatch = useDispatch();
 
   const handleSlideChange = (index: any) => {
     setCurrentItemIndex(index);
@@ -75,15 +80,19 @@ export default function useDashBoardService() {
     setSearchInput(e.target.value);
   };
 
-  const handleSubmitSearch = () => {
+  const handleSubmitSearch = async () => {
     console.log(searchInput);
     setSearchInput("");
     navigate("/joblist");
+    dispatch(getSearchInput(searchInput));
   };
 
-  const handleTrending = (e: any) => {
+  const handleTrending = async (e: any) => {
     console.log(e.target.value);
+    navigate("/joblist");
+    dispatch(getSearchInput(e.target.value));
   };
+
   return {
     handleSearchInput,
     searchInput,
