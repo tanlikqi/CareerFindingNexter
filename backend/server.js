@@ -20,6 +20,7 @@ const jobapplication = require("./api/Job/jobapplication");
 const jobTypeRoutes = require("./api/SetupMgm/JobType/jobType");
 const stateRoutes = require("../backend/api/SetupMgm/State/state");
 const specialisationRoutes = require("./api/SetupMgm/Specialization/specialization");
+const experienceRoutes = require("./api/SetupMgm/Experience/experience");
 // SetupMgm //
 
 app.use("/auth", authRoutes);
@@ -35,6 +36,8 @@ app.use("/setupMgm/jobType", jobTypeRoutes);
 app.use("/setupMgm/state", stateRoutes);
 
 app.use("/setupMgm/specialization", specialisationRoutes);
+
+app.use("/setupMgm/experience", experienceRoutes);
 
 app.get("/", (re, res) => {
   return res.json("From BackendSide");

@@ -87,7 +87,6 @@ function UserPostedJobList() {
           <JobListComponent
             data={jobData}
             isEditing={true}
-            isDeleting={true}
             handleDelete={handleDelete}
             searchInputs={searchInput}
           />

@@ -10,6 +10,7 @@ import { getAllCompany } from "../../../api/company";
 import { getAllJobType } from "../../../api/jobType";
 import { getAllState } from "../../../api/state";
 import { getAllSpecialization } from "../../../api/specialization";
+import { getAllExperience } from "../../../api/experience";
 
 export default function useAddJobService() {
   const AddJobSchema = yup.object({
@@ -30,7 +31,7 @@ export default function useAddJobService() {
     specialisation: yup.string().label("Specialisation").required(),
     state: yup.string().label("State").required(),
     experience: yup.string().label("Experience").required(),
-    salary: yup.string().label("Salary").required(),
+    // salary: yup.string().label("Salary").required(),
     location: yup.string().label("Location").required(),
     jobRequirements: yup.array(
       yup.object({
@@ -120,6 +121,22 @@ export default function useAddJobService() {
 
   const [specialisationData, setSpecialisationData] = useState({});
 
+  const [experienceData, setExperienceData] = useState([]);
+
+  const [fromSalary, setFromSalary] = useState<any>(["500"]);
+
+  const [toSalary, setToSalary] = useState<any>(["500"]);
+
+  const [isUndisclosed, setIsUndisclosed] = useState(false);
+
+  const handleFromSalary = (e: any) => {
+    setFromSalary(e.target.value);
+  };
+
+  const handleToSalary = (e: any) => {
+    setToSalary(e.target.value);
+  };
+
   useEffect(() => {
     const retrieveAllJobType = async () => {
       const res = await getAllJobType();
@@ -129,7 +146,6 @@ export default function useAddJobService() {
       );
       setJobTypeData(filteredJobType);
     };
-
     retrieveAllJobType();
   }, []);
 
@@ -142,7 +158,6 @@ export default function useAddJobService() {
       );
       setStateData(filteredState);
     };
-
     retrieveAllState();
   }, []);
 
@@ -150,14 +165,24 @@ export default function useAddJobService() {
     const retrieveAllSpecialization = async () => {
       const res = await getAllSpecialization();
       const specialisationdata = res.data;
-      console.log(res.data);
       const filteredSpecialisation = specialisationdata.filter(
         (item: any) => item.status === "ACTIVE"
       );
       setSpecialisationData(filteredSpecialisation);
     };
-
     retrieveAllSpecialization();
+  }, []);
+
+  useEffect(() => {
+    const retrieveAllExperience = async () => {
+      const res = await getAllExperience();
+      const experienceData = res.data;
+      const filteredExperienceData = experienceData.filter(
+        (item: any) => item.status === "ACTIVE"
+      );
+      setExperienceData(filteredExperienceData);
+    };
+    retrieveAllExperience();
   }, []);
 
   const showJobReqModal = () => {
@@ -191,12 +216,54 @@ export default function useAddJobService() {
     }
   };
 
+  const handleUndisclosed = (e: any) => {
+    setValue("salary", e);
+    setIsUndisclosed(!isUndisclosed);
+  };
+
   const handleCancel = () => {
     navigate("/dashboard");
   };
 
   const handleOk: SubmitHandler<any> = async (formValues: any) => {
-    console.log(formValues);
+    const formatNumber = (value: any) => {
+      if (value >= 10000) {
+        return `${value / 1000}K`;
+      } else if (value >= 1000) {
+        return `${value / 1000}K`;
+      } else {
+        return value.toString();
+      }
+    };
+
+    if (isUndisclosed == false) {
+      if (
+        fromSalary.length > 0 &&
+        toSalary.length > 0 &&
+        fromSalary[0] > toSalary[0]
+      ) {
+        console.log("Error: 'From Salary' cannot be greater than 'To Salary'");
+        Swal.fire("From Salary cannot greater than To Salary", "", "error");
+        return; // Stop further processing
+      }
+      if (
+        fromSalary.length > 0 &&
+        toSalary.length > 0 &&
+        fromSalary[0] === toSalary[0]
+      ) {
+        console.log("Error: 'From Salary' cannot be the same as 'To Salary'");
+        Swal.fire("From Salary and To Salary cannot be same", "", "error");
+        return; // Stop further processing
+      }
+      const formatFromSalary = fromSalary.map(formatNumber);
+
+      const formatToSalary = toSalary.map(formatNumber);
+
+      const resultString = `RM ${formatFromSalary.join(
+        ", "
+      )} - RM ${formatToSalary.join(", ")}`;
+      setValue("salary", resultString);
+    }
 
     //////////////////////////////////////////////
     // WORK!!!
@@ -279,5 +346,12 @@ export default function useAddJobService() {
     jobTypeData,
     stateData,
     specialisationData,
+    experienceData,
+    fromSalary,
+    handleFromSalary,
+    toSalary,
+    handleToSalary,
+    handleUndisclosed,
+    isUndisclosed,
   };
 }

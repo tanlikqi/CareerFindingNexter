@@ -24,7 +24,6 @@ function CustomSelect({
   error,
   helperText,
 }: IProps) {
-  console.log(listItem);
   return (
     <>
       <FormControl variant="filled" sx={{ minWidth: 120 }}>

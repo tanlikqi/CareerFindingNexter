@@ -10,16 +10,19 @@ import {
   DialogActions,
   DialogTitle,
   Avatar,
-  Input,
+  Slider,
+  Typography,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import React from "react";
-import "./addjob.scss";
 import AddIcon from "@mui/icons-material/Add";
-import useAddJobService from "./service";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Controller } from "react-hook-form";
 import CustomSelect from "../../../components/Select";
 import { disablefont } from "../../../utils/Contants";
+import useAddJobService from "./service";
+import "./addjob.scss";
 
 function AddJob() {
   const {
@@ -47,7 +50,19 @@ function AddJob() {
     jobTypeData,
     stateData,
     specialisationData,
+    experienceData,
+    fromSalary,
+    handleFromSalary,
+    handleToSalary,
+    toSalary,
+    handleUndisclosed,
+    isUndisclosed,
   } = useAddJobService();
+
+  function valuetext(value: number) {
+    return `${value}°C`;
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit(handleOk)}>
@@ -209,16 +224,17 @@ function AddJob() {
                   control={control}
                   name="experience"
                   render={({ field }) => (
-                    <TextField
+                    <CustomSelect
                       {...field}
-                      label="Experience"
+                      label={"Experience"}
+                      defaultOption={"Please Select A Experience"}
+                      listItem={experienceData}
                       error={AddJobError.experience?.message ? true : false}
                       helperText={
                         AddJobError.experience?.message
                           ? (AddJobError.experience?.message as React.ReactNode)
                           : false
                       }
-                      variant="filled"
                     />
                   )}
                 />
@@ -226,20 +242,52 @@ function AddJob() {
             </Grid>
             <Grid item xs={6}>
               <Box className="addjobBox">
+                <Typography>From Salary (RM {fromSalary})</Typography>
+                <Slider
+                  value={fromSalary}
+                  aria-label="Salary"
+                  defaultValue={500}
+                  getAriaValueText={valuetext}
+                  valueLabelDisplay="auto"
+                  step={500}
+                  marks
+                  min={500}
+                  max={25000}
+                  onChange={(e: any) => {
+                    handleFromSalary(e);
+                  }}
+                  disabled={isUndisclosed ? true : false}
+                />
+                <Typography>To Salary (RM {toSalary})</Typography>
+                <Slider
+                  value={toSalary}
+                  aria-label="Salary"
+                  defaultValue={500}
+                  getAriaValueText={valuetext}
+                  valueLabelDisplay="auto"
+                  step={500}
+                  marks
+                  min={500}
+                  max={25000}
+                  onChange={(e: any) => {
+                    handleToSalary(e);
+                  }}
+                  disabled={isUndisclosed ? true : false}
+                />
                 <Controller
                   control={control}
                   name="salary"
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Salary"
-                      error={AddJobError.salary?.message ? true : false}
-                      helperText={
-                        AddJobError.salary?.message
-                          ? (AddJobError.salary?.message as React.ReactNode)
-                          : false
-                      }
-                      variant="filled"
+                    <FormControlLabel
+                      // {...field}
+                      control={<Checkbox />}
+                      checked={field.value === "Undisclosed"}
+                      onChange={(e) => {
+                        handleUndisclosed(
+                          e.target.checked ? "Undisclosed" : ""
+                        );
+                      }}
+                      label={"Undisclosed"}
                     />
                   )}
                 />

@@ -10,7 +10,10 @@ import {
   DialogActions,
   DialogTitle,
   Avatar,
-  Input,
+  Typography,
+  Slider,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import React from "react";
 import "./editjob.scss";
@@ -47,7 +50,18 @@ function EditJob() {
     jobTypeData,
     stateData,
     specialisationData,
+    fromSalary,
+    handleFromSalary,
+    handleToSalary,
+    toSalary,
+    handleUndisclosed,
+    isUndisclosed,
   } = useEditJobService();
+
+  function valuetext(value: number) {
+    return `${value}°C`;
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit(handleOk)}>
@@ -236,20 +250,52 @@ function EditJob() {
             </Grid>
             <Grid item xs={6}>
               <Box className="addjobBox">
+                <Typography>From Salary (RM {fromSalary})</Typography>
+                <Slider
+                  value={fromSalary}
+                  aria-label="Salary"
+                  defaultValue={500}
+                  getAriaValueText={valuetext}
+                  valueLabelDisplay="auto"
+                  step={500}
+                  marks
+                  min={500}
+                  max={25000}
+                  onChange={(e: any) => {
+                    handleFromSalary(e);
+                  }}
+                  disabled={isUndisclosed ? true : false}
+                />
+                <Typography>To Salary (RM {toSalary})</Typography>
+                <Slider
+                  value={toSalary}
+                  aria-label="Salary"
+                  defaultValue={500}
+                  getAriaValueText={valuetext}
+                  valueLabelDisplay="auto"
+                  step={500}
+                  marks
+                  min={500}
+                  max={25000}
+                  onChange={(e: any) => {
+                    handleToSalary(e);
+                  }}
+                  disabled={isUndisclosed ? true : false}
+                />
                 <Controller
                   control={control}
                   name="salary"
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="Salary"
-                      error={EditJob.salary?.message ? true : false}
-                      helperText={
-                        EditJob.salary?.message
-                          ? (EditJob.salary?.message as React.ReactNode)
-                          : false
-                      }
-                      variant="filled"
+                    <FormControlLabel
+                      // {...field}
+                      control={<Checkbox />}
+                      checked={field.value === "Undisclosed"}
+                      onChange={(e) => {
+                        handleUndisclosed(
+                          e.target.checked ? "Undisclosed" : ""
+                        );
+                      }}
+                      label={"Undisclosed"}
                     />
                   )}
                 />

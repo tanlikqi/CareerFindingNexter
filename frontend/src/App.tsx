@@ -16,6 +16,7 @@ import JobApplication from "./pages/Jobs/JobApplication";
 import Profile from "./pages/Profile";
 import StateSetup from "./pages/SetupMagement/StateSetup";
 import JobApplicationHitory from "./pages/Jobs/JobApplyHistory";
+import ExperienceSetup from "./pages/SetupMagement/ExperienceSetup";
 function App() {
   // useEffect(() => {
   //   fetch("http://localhost:8081/users")
@@ -48,7 +49,6 @@ function App() {
             <Route path="/addjob" element={<AddJob />} />
             <Route path="/editjob" element={<EditJob />} />
             <Route path="/userpostedjoblist" element={<UserPostedJobList />} />
-            <Route path="/jobtypesetup" element={<JobTypeSetup />} />
             <Route path="/jobapplication" element={<JobApplication />} />
             <Route
               path="/jobapplicationhistory"
@@ -60,6 +60,8 @@ function App() {
               element={<SpecializationSetup />}
             />
             <Route path="/statesetup" element={<StateSetup />} />
+            <Route path="experiencesetup" element={<ExperienceSetup />} />{" "}
+            <Route path="/jobtypesetup" element={<JobTypeSetup />} />
             {/* ------------------------------SetupManagement--------------------------- */}
           </Route>
         </Routes>

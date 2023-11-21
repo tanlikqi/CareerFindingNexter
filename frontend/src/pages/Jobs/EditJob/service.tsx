@@ -34,7 +34,7 @@ export default function useEditJobService() {
     specialisation: yup.string().label("Specialisation").required(),
     state: yup.string().label("State").required(),
     experience: yup.string().label("Experience").required(),
-    salary: yup.string().label("Salary").required(),
+    // salary: yup.string().label("Salary").required(),
     location: yup.string().label("Location").required(),
     jobRequirements: yup.array(
       yup.object({
@@ -106,6 +106,20 @@ export default function useEditJobService() {
 
   const [specialisationData, setSpecialisationData] = useState({});
 
+  const [fromSalary, setFromSalary] = useState<any>(["500"]);
+
+  const [toSalary, setToSalary] = useState<any>(["500"]);
+
+  const [isUndisclosed, setIsUndisclosed] = useState(false);
+
+  const handleFromSalary = (e: any) => {
+    setFromSalary(e.target.value);
+  };
+
+  const handleToSalary = (e: any) => {
+    setToSalary(e.target.value);
+  };
+
   useEffect(() => {
     const retrieveAllJobType = async () => {
       const res = await getAllJobType();
@@ -123,7 +137,6 @@ export default function useEditJobService() {
     const retrieveAllSpecialization = async () => {
       const res = await getAllSpecialization();
       const specialisationdata = res.data;
-      console.log(res.data);
       const filteredSpecialisation = specialisationdata.filter(
         (item: any) => item.status === "ACTIVE"
       );
@@ -153,8 +166,6 @@ export default function useEditJobService() {
   const getJobDetail = async () => {
     const res = await getJobDetailById({ data: selectedjobId });
 
-    console.log(res.data.data);
-
     setValue("companyLogoUrl", res.data.data.companyLogoUrl);
     // setValue("companyLogoUrl", res.data.data.companyLogoUrl);
     setValue("companyName", res.data.data.companyName);
@@ -163,15 +174,43 @@ export default function useEditJobService() {
     setValue("specialisation", res.data.data.specialisation);
     setValue("state", res.data.data.state);
     setValue("experience", res.data.data.experience);
-    setValue("salary", res.data.data.salary);
     setValue("location", res.data.data.location);
-    console.log(res.data.data.description);
+    setValue("salary", res.data.data.salary);
 
     const descriptions = JSON.parse(res.data.data.description);
     const requirements = JSON.parse(res.data.data.requirement);
 
     setValue("jobDescriptions", descriptions);
     setValue("jobRequirements", requirements);
+
+    const salaryRange = res.data.data.salary;
+    if (salaryRange == "Undisclosed") {
+      setIsUndisclosed(true);
+      console.log(true);
+    } else {
+      console.log(false);
+    }
+    console.log(salaryRange);
+    const [minSalaryStr, maxSalaryStr] = salaryRange
+      .substring(3) // Remove "RM "
+      .split(" - ");
+
+    const minSalary = parseSalary(minSalaryStr);
+    const maxSalary = parseSalary(maxSalaryStr);
+
+    function parseSalary(salaryStr: any) {
+      const match = salaryStr.match(/(\d+\.?\d*)K?/); // Match numeric part with optional 'K'
+      if (match) {
+        const numericPart = match[1];
+        const parsedSalary =
+          parseFloat(numericPart) * (salaryStr.includes("K") ? 1000 : 1);
+        return isNaN(parsedSalary) ? 0 : parsedSalary;
+      }
+      return 0;
+    }
+
+    setFromSalary([minSalary]);
+    setToSalary([maxSalary]);
   };
 
   const showJobReqModal = () => {
@@ -205,12 +244,56 @@ export default function useEditJobService() {
     }
   };
 
+  const handleUndisclosed = (e: any) => {
+    setValue("salary", e);
+    setIsUndisclosed(!isUndisclosed);
+  };
+
   const handleCancel = () => {
     navigate("/dashboard");
   };
 
   const handleOk: SubmitHandler<any> = async (formValues: any) => {
     console.log(formValues);
+    const formatNumber = (value: any) => {
+      if (value >= 10000) {
+        return `${value / 1000}K`;
+      } else if (value >= 1000) {
+        return `${value / 1000}K`;
+      } else {
+        return value.toString();
+      }
+    };
+    if (isUndisclosed == false) {
+      if (
+        fromSalary.length > 0 &&
+        toSalary.length > 0 &&
+        fromSalary[0] > toSalary[0]
+      ) {
+        console.log("Error: 'From Salary' cannot be greater than 'To Salary'");
+        Swal.fire("From Salary cannot greater than To Salary", "", "error");
+        return; // Stop further processing
+      }
+      if (
+        fromSalary.length > 0 &&
+        toSalary.length > 0 &&
+        fromSalary[0] === toSalary[0]
+      ) {
+        console.log("Error: 'From Salary' cannot be the same as 'To Salary'");
+        Swal.fire("From Salary and To Salary cannot be same", "", "error");
+
+        return; // Stop further processing
+      }
+
+      const formatFromSalary = fromSalary.map(formatNumber);
+
+      const formatToSalary = toSalary.map(formatNumber);
+
+      const resultString = `RM ${formatFromSalary.join(
+        ", "
+      )} - RM ${formatToSalary.join(", ")}`;
+      setValue("salary", resultString);
+    }
 
     if (getValues("companyLogoUrl")) {
       const formData = new FormData();
@@ -273,5 +356,11 @@ export default function useEditJobService() {
     jobTypeData,
     stateData,
     specialisationData,
+    fromSalary,
+    toSalary,
+    handleFromSalary,
+    handleToSalary,
+    handleUndisclosed,
+    isUndisclosed,
   };
 }

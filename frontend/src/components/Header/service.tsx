@@ -154,6 +154,12 @@ export default function useHeaderService() {
           path: "/statesetup",
           showable: userRole == "admin" ? true : false,
         },
+        {
+          subkey: 3.04,
+          title: "Experience Setup",
+          path: "/experiencesetup",
+          showable: userRole == "admin" ? true : false,
+        },
       ],
     },
   ];

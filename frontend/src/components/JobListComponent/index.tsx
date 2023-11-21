@@ -14,11 +14,11 @@ import axios from "axios";
 import { deleteJob } from "../../api/job";
 import calculateAgeFromDate from "../../utils/formateDate";
 import NotFoundJpg from "../../assets/img/no-result-found.jpg";
+import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
 
 interface IProps {
   data?: any;
   isEditing?: boolean;
-  isDeleting?: boolean;
   handleDelete?: any;
   searchInputs?: any;
 }
@@ -26,7 +26,6 @@ interface IProps {
 function JobListComponent({
   data,
   isEditing,
-  isDeleting,
   handleDelete,
   searchInputs,
 }: IProps) {
@@ -109,23 +108,31 @@ function JobListComponent({
               <div>
                 <Box className="btnBox">
                   {isEditing ? (
-                    <IconButton
-                      size="large"
-                      style={{ padding: "0px" }}
-                      onClick={() => goToEditPage(value.jobId)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  ) : null}{" "}
-                  {isDeleting ? (
+                    <>
+                      <IconButton
+                        size="large"
+                        style={{ padding: "0px" }}
+                        onClick={() => goToEditPage(value.jobId)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        size="large"
+                        style={{ padding: "0px", marginLeft: "20px" }}
+                        onClick={() => handleDelete(value.jobId)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  ) : (
                     <IconButton
                       size="large"
                       style={{ padding: "0px", marginLeft: "20px" }}
-                      onClick={() => handleDelete(value.jobId)}
+                      // onClick={() => handleDelete(value.jobId)}
                     >
-                      <DeleteIcon />
+                      <TurnedInNotIcon />
                     </IconButton>
-                  ) : null}
+                  )}
                 </Box>
                 <Card
                   key={value.jobId}
